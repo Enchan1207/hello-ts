@@ -2,7 +2,7 @@
   "name": "hello-ts",
   "version": "0.1.0",
   "description": "TypeScript project as primitive as possible",
-  "main": "dist/index.js",
+  "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
     "prepack": "npm run build",
