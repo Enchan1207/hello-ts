@@ -1,0 +1,19 @@
+{
+  "name": "hello-ts",
+  "version": "0.1.0",
+  "description": "TypeScript project as primitive as possible",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enchan1207/hello-ts.git"
+  },
+  "author": "Enchan1207",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Enchan1207/hello-ts/issues"
+  },
+  "homepage": "https://github.com/Enchan1207/hello-ts#readme"
+}
