@@ -61,11 +61,16 @@ jobs:
             git checkout --orphan release
           fi
           git rm -rf .
+
+      - name: unpack package archive and modify package.json
+        run: |
           tar xzf ${{ steps.pack.outputs.archive-name }}
           shopt -s dotglob
           mv package/* .
           rmdir package
           rm ${{ steps.pack.outputs.archive-name }}
+          jq -r 'del(.scripts.preinstall)' package.json > package.json.tmp
+          mv package.json.tmp package.json
 
       - name: commit changes and push
         run: |

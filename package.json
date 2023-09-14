@@ -4,6 +4,7 @@
   "description": "TypeScript project as primitive as possible",
   "main": "dist/main.js",
   "scripts": {
+    "preinstall": "echo \"\n\nIt seems that you're trying to install from the master branch. \nPlease install from release branch. (e.g. npm i Enchan1207/hello-ts#release)\";exit 1",
     "build": "tsc",
     "prepack": "npm run build",
     "prepublishOnly": "npm run build"
