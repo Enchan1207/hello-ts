@@ -1,0 +1,69 @@
+name: configure package
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+  pull_request:
+    branches: ["master"]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: setup git
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: switch branch to release for npm package and pull if remote exists
+        run: |
+          git checkout --orphan release
+          git rm -rf .
+          git fetch origin release && isRemoteExists=1 || isRemoteExists=0
+          if [ $isRemoteExists -eq 1 ]; then
+            git pull origin release
+          fi
+          git switch master
+
+      - name: pack package content
+        id: pack
+        run: |
+          npm pack
+          TARBALL_PATH=`cat package.json| jq -r '.name + "-" + .version + ".tgz"'`
+          echo "archive-name=$TARBALL_PATH" >> "$GITHUB_OUTPUT"
+          tar -tf $TARBALL_PATH
+
+      - name: switch to release and unpack package output
+        run: |
+          git branch --list | grep release && isLocalExists=1 || isLocalExists=0
+          if [ $isLocalExists -eq 1 ]; then
+            git switch release
+          else
+            git checkout --orphan release
+          fi
+          git rm -rf .
+          tar xzf ${{ steps.pack.outputs.archive-name }}
+
+      - name: commit changes and push
+        run: |
+          git add --all
+          git diff --quiet && git diff --staged --quiet || git commit -am "[Update] package"
+          git push origin release
