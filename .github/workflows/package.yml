@@ -8,6 +8,7 @@ on:
       - "package.json"
       - "package-lock.json"
       - "tsconfig.json"
+      - ".github/workflows/package.yml"
   pull_request:
     branches: ["master"]
     paths:
@@ -47,6 +48,7 @@ jobs:
         id: pack
         run: |
           npm pack
+          rm -rf dist
           TARBALL_PATH=`cat package.json| jq -r '.name + "-" + .version + ".tgz"'`
           echo "archive-name=$TARBALL_PATH" >> "$GITHUB_OUTPUT"
           tar -tf $TARBALL_PATH
@@ -61,6 +63,10 @@ jobs:
           fi
           git rm -rf .
           tar xzf ${{ steps.pack.outputs.archive-name }}
+          shopt -s dotglob
+          mv package/* .
+          rmdir package
+          rm ${{ steps.pack.outputs.archive-name }}
 
       - name: commit changes and push
         run: |
