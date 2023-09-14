@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Enchan1207/hello-ts/issues"
   },
-  "homepage": "https://github.com/Enchan1207/hello-ts#readme"
+  "homepage": "https://github.com/Enchan1207/hello-ts#readme",
+  "dependencies": {
+    "typescript": "^5.2.2"
+  }
 }
