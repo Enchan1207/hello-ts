@@ -16,7 +16,7 @@
     "url": "https://github.com/Enchan1207/hello-ts/issues"
   },
   "homepage": "https://github.com/Enchan1207/hello-ts#readme",
-  "dependencies": {
+  "devDependencies": {
     "typescript": "^5.2.2"
   }
 }
